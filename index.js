@@ -7,8 +7,8 @@ const app = express();
 
 // --- CONFIGURATION ---
 const PORT = process.env.PORT || 3000; // Render will set PORT environment variable
-const META_VERIFY_TOKEN = process.env.VERIFY_TOKEN; // Using your specified env var name
-const META_APP_SECRET = process.env.APP_SECRET;     // Using your specified env var name
+const META_VERIFY_TOKEN = process.env.META_VERIFY_TOKEN; // Using your specified env var name
+const META_APP_SECRET = process.env.META_APP_SECRET;     // Using your specified env var name
 
 if (!META_VERIFY_TOKEN || !META_APP_SECRET) {
     console.error("Missing VERIFY_TOKEN or APP_SECRET in environment variables.");
