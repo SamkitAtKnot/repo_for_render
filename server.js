@@ -58,7 +58,7 @@ app.post('/webhook', (req, res) => {
       if (entry.changes) {
         entry.changes.forEach(change => {
           switch (change.field) {
-            case 'mention':
+            case 'mentions':
               handleInstagramMention(change.value);
               break;
             case 'comments':
@@ -66,6 +66,12 @@ app.post('/webhook', (req, res) => {
               break;
             case 'messages':
               handleInstagramMessage(change.value);
+            case 'message_reactions':
+              handleInstagramMessageReaction(change.value);
+            case 'messaging_postbacks':
+              handleInstagramMessagingPostback(change.value);
+            case 'messaging_seen':
+              handleInstagramMessagingSeen(change.value);
               break;
             default:
               console.log('Unhandled Instagram field:', change.field);
@@ -104,4 +110,19 @@ function handleInstagramComment(data) {
 function handleInstagramMessage(data) {
   console.log('Instagram Message:', data);
   // Implement your logic to respond to messages
+}
+
+function handleInstagramMessageReaction(data) {
+  console.log('Instagram Message Reaction:', data);
+  // Implement your logic to handle message reactions
+}
+
+function handleInstagramMessagingPostback(data) {
+  console.log('Instagram Messaging Postback:', data);
+  // Implement your logic to handle messaging postbacks
+}
+
+function handleInstagramMessagingSeen(data) {
+  console.log('Instagram Messaging Seen:', data);
+  // Implement your logic to handle messaging seen
 }
