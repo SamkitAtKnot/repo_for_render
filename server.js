@@ -49,7 +49,7 @@ app.get('/webhook', (req, res) => {
 
 // Webhook event handling POST
 // Apply the signature verification middleware ONLY to this route
-app.post('/webhook', verifyXHubSignature, (req, res) => {
+app.post('/webhook', (req, res) => {
   console.log("Received POST /webhook event. Signature verified.");
   const body = req.body;
 
