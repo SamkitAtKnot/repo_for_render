@@ -92,12 +92,18 @@ app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 
 // ---- Handler functions ----
 async function handleInstagramMention(data) {
-  // console.log('Instagram Mention:', data);
+  console.log('its an Instagram Mention');
+  console.log('Instagram Mention:', data);
   // Implement your logic to respond to mentions
   media_id = data.media_id;
   comment_id = data.comment_id;
 
   try {
+    let mediaUrl = null;
+    let mediaType = null;
+    let commentText = null;
+    let commentUsername = null;
+
     // 1. Fetch media details (e.g., image/video URL)
     const mediaResponse = await fetch(
       `https://graph.facebook.com/v23.0/${media_id}` +
@@ -105,21 +111,32 @@ async function handleInstagramMention(data) {
     );
 
     const mediaData = await mediaResponse.json();
-    const mediaUrl = mediaData.media_url;
-    const mediaType = mediaData.media_type;
+    if(mediaData.media_url && mediaData.media_type){
+    mediaUrl = mediaData.media_url;
+    mediaType = mediaData.media_type;
     console.log('Fetched Media Type:', mediaType);
     console.log('Fetched Media URL:', mediaUrl);
+    }
+    else{
+      console.log('Media not found');
+    }
 
     // 2. Fetch comment details (text of the mention comment)
     const commentResponse = await fetch(
-      `https://graph.facebook.com/v18.0/${comment_id}` +
+      `https://graph.facebook.com/v23.0/${comment_id}` +
       `?fields=text,username&access_token=${PAGE_ACCESS_TOKEN}`
     );
+    
     const commentData = await commentResponse.json();
-    const commentText = commentData.text;
-    const commentUsername = commentData.username;
-    console.log('Fetched Comment Username:', commentUsername);
-    console.log('Fetched Comment Text:', commentText);
+    if (commentData.text && commentData.username) {
+      commentText = commentData.text;
+      commentUsername = commentData.username;
+      console.log('Fetched Comment Username:', commentUsername);
+      console.log('Fetched Comment Text:', commentText);
+    }
+    else{
+      console.log('Comment not found');
+    }
 
     // TODO: Your business logic here, e.g. auto-reply or notification
     // Example: replyToComment(comment_id, `Thanks for mentioning us!`);
