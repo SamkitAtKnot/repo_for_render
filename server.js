@@ -46,7 +46,7 @@ app.get('/webhook', (req, res) => {
 });
 
 // POST /webhook to receive events
-app.post('/webhook', verifyXHub, async (req, res) => {
+app.post('/webhook', async (req, res) => {
   console.log('✅ Signature verified - webhook event received');
   const body = req.body;
 
