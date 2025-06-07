@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const { xHubSignatureMiddleware } = require('x-hub-signature-middleware');
-const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -111,9 +110,9 @@ async function handleInstagramMention(data) {
     );
 
     const mediaData = await mediaResponse.json();
-    if(mediaData.media_url && mediaData.media_type){
-    mediaUrl = mediaData.media_url;
-    mediaType = mediaData.media_type;
+    if(mediaData.media_url || mediaData.media_type || mediaData.permalink){
+    mediaUrl = mediaData.media_url || mediaData.permalink || '';
+    mediaType = mediaData.media_type || ''; 
     console.log('Fetched Media Type:', mediaType);
     console.log('Fetched Media URL:', mediaUrl);
     }
@@ -126,9 +125,9 @@ async function handleInstagramMention(data) {
       `https://graph.facebook.com/v23.0/${comment_id}` +
       `?fields=text,username&access_token=${PAGE_ACCESS_TOKEN}`
     );
-    
+
     const commentData = await commentResponse.json();
-    if (commentData.text && commentData.username) {
+    if (commentData.text || commentData.username) {
       commentText = commentData.text;
       commentUsername = commentData.username;
       console.log('Fetched Comment Username:', commentUsername);
