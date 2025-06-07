@@ -49,7 +49,7 @@ app.get('/webhook', (req, res) => {
 
 // Webhook event handling POST
 // Apply the signature verification middleware ONLY to this route
-app.post('/webhook', (req, res) => {
+app.post('/webhook', verifyXHubSignature, (req, res) => {
   console.log("Received POST /webhook event. Signature verified.");
   const body = req.body;
 
@@ -98,8 +98,10 @@ app.listen(PORT, () => {
 
 // Handler functions
 function handleInstagramMention(data) {
-  console.log('Instagram Mention:', data);
+  // console.log('Instagram Mention:', data);
   // Implement your logic to respond to mentions
+  media_id = data.media_id;
+  comment_id = data.comment_id;
 }
 
 function handleInstagramComment(data) {
