@@ -26,7 +26,7 @@ app.use(
 );
 
 // 2) Signature verification middleware on POST /webhook
-deprecated: // Create instance of xHubSignatureMiddleware
+// Create instance of xHubSignatureMiddleware
 const verifyXHub = xHubSignatureMiddleware({
   algorithm: 'sha256',
   secret: APP_SECRET,
@@ -56,22 +56,22 @@ app.post('/webhook', verifyXHub, async (req, res) => {
       entry.changes.forEach((change) => {
         switch (change.field) {
           case 'mentions':
-            handleMention(change.value);
+            handleInstagramMention(change.value);
             break;
           case 'comments':
-            handleComment(change.value);
+            handleInstagramComment(change.value);
             break;
           case 'messages':
-            handleMessage(change.value);
+            handleInstagramMessage(change.value);
             break;
           case 'message_reactions':
-            handleReaction(change.value);
+            handleInstagramMessageReaction(change.value);
             break;
           case 'messaging_postbacks':
-            handlePostback(change.value);
+            handleInstagramMessagingPostback(change.value);
             break;
           case 'messaging_seen':
-            handleSeen(change.value);
+            handleInstagramMessagingSeen(change.value);
             break;
           default:
             console.log('Unhandled Instagram field:', change.field);
