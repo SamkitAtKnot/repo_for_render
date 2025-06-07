@@ -15,15 +15,21 @@ app.use(bodyParser.json({
   }
 }));
 
-// Signature verification middleware
-app.use(xHubSignatureMiddleware({
+// Create an instance of the xHubSignatureMiddleware
+// This will be applied specifically to the POST /webhook route
+const verifyXHubSignature = xHubSignatureMiddleware({
   algorithm: 'sha256',
   secret: APP_SECRET,
-  require: true,
-  getRawBody: req => req.rawBody
-}));
+  require: true, // This means if the signature is missing or invalid, it will throw an error.
+                 // Set to false if you want to handle req.isXHubValid() manually.
+  getRawBody: req => {
+    // This function tells the middleware how to get the raw body.
+    // It should return the same buffer that bodyParser stored.
+    return req.rawBody;
+  }
+});
 
-// Webhook verification endpoint
+// Webhook verification endpoint GET
 app.get('/webhook', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
@@ -41,8 +47,10 @@ app.get('/webhook', (req, res) => {
   }
 });
 
-// Webhook event handling
-app.post('/webhook', (req, res) => {
+// Webhook event handling POST
+// Apply the signature verification middleware ONLY to this route
+app.post('/webhook', verifyXHubSignature, (req, res) => {
+  console.log("Received POST /webhook event. Signature verified.");
   const body = req.body;
 
   if (body.object === 'instagram') {
