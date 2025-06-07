@@ -92,7 +92,7 @@ app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 // ---- Handler functions ----
 async function handleInstagramMention(data) {
   console.log('its an Instagram Mention');
-  console.log('Instagram Mention:', data);
+  // console.log('Instagram Mention:', data);
   // Implement your logic to respond to mentions
   media_id = data.media_id;
   comment_id = data.comment_id;
